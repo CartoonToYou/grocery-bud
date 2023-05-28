@@ -12,6 +12,9 @@ console.log(alert);
 
 submitBtn.addEventListener("click", addItem);
 
+let editElement = null;
+let editFlag = false;
+
 function addItem(event) {
   event.preventDefault();
   const inputValue = groceryInput.value;
@@ -51,21 +54,45 @@ function addItem(event) {
       </button>
     </div>
   `;
+
+  const editBtn = element.querySelector(".edit-btn");
+  editBtn.addEventListener("click", editItem);
+
   const deleteBtn = element.querySelector(".delete-btn");
   deleteBtn.addEventListener("click", deleteItem);
-  list.appendChild(element);
 
-  alert.textContent = "item added to the list";
-  alert.classList.add("alert-success");
+  // Add item mode
+  if (inputValue !== "" && !editFlag) {
+    list.appendChild(element);
+    groceryInput.value = "";
 
-  setTimeout(function () {
-    console.log("alert will disappear!");
-    alert.textContent = "";
-    alert.classList.remove("alert-success");
-  }, 3000);
+    alert.textContent = "item added to the list";
+    alert.classList.add("alert-success");
+
+    setTimeout(function () {
+      console.log("alert will disappear!");
+      alert.textContent = "";
+      alert.classList.remove("alert-success");
+    }, 3000);
+  } else if (inputValue !== "" && editFlag) {
+    editElement.innerHTML = inputValue;
+  }
 }
 
 function deleteItem(event) {
   const element = event.currentTarget;
   console.log(element);
+  const parentOfDeleteBtn = element.parentElement;
+  console.log(parentOfDeleteBtn);
+  const article = parentOfDeleteBtn.parentElement;
+  console.log(article);
+  list.removeChild(article);
+}
+
+function editItem(event) {
+  editElement = event.currentTarget.parentElement.previousElementSibling;
+  groceryInput.value = editElement.innerHTML;
+  console.log(editElement);
+  submitBtn.textContent = "edit";
+  editFlag = true;
 }
