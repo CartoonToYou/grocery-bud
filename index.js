@@ -10,7 +10,12 @@ console.log(list);
 const alert = document.querySelector(".alert");
 console.log(alert);
 
+const clearBtn = document.querySelector(".clear-btn");
+console.log(clearBtn);
+
 submitBtn.addEventListener("click", addItem);
+
+clearBtn.addEventListener("click", clearItems);
 
 let editElement = null;
 let editFlag = false;
@@ -64,6 +69,7 @@ function addItem(event) {
   // Add item mode
   if (inputValue !== "" && !editFlag) {
     list.appendChild(element);
+    localStorage.setItem(id, inputValue);
     groceryInput.value = "";
 
     alert.textContent = "item added to the list";
@@ -87,6 +93,15 @@ function deleteItem(event) {
   const article = parentOfDeleteBtn.parentElement;
   console.log(article);
   list.removeChild(article);
+
+  alert.textContent = "item removed";
+  alert.classList.add("alert-danger");
+
+  setTimeout(function () {
+    console.log("alert will disappear!");
+    alert.textContent = "";
+    alert.classList.remove("alert-danger");
+  }, 3000);
 }
 
 function editItem(event) {
@@ -95,4 +110,41 @@ function editItem(event) {
   console.log(editElement);
   submitBtn.textContent = "edit";
   editFlag = true;
+}
+
+function clearItems() {
+  const items = document.querySelectorAll(".grocery-item");
+  console.log(items);
+  if (items.length > 0) {
+    items.forEach(function (item) {
+      console.log(item);
+      list.removeChild(item);
+    });
+  }
+
+  alert.textContent = "empty list";
+  alert.classList.add("alert-danger");
+
+  setTimeout(function () {
+    console.log("alert will disappear!");
+    alert.textContent = "";
+    alert.classList.remove("alert-danger");
+  }, 3000);
+}
+
+const storageBtn = document.querySelector(".set-storage");
+
+storageBtn.addEventListener("click", setItemToLocalStorage);
+
+function setItemToLocalStorage() {
+  localStorage.setItem("car", "Nissan");
+}
+
+const getStorageBtn = document.querySelector(".get-storage");
+
+getStorageBtn.addEventListener("click", getItemStorage);
+
+function getItemStorage() {
+  const item = localStorage.getItem("car");
+  console.log(item);
 }
