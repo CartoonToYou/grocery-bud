@@ -69,7 +69,23 @@ function addItem(event) {
   // Add item mode
   if (inputValue !== "" && !editFlag) {
     list.appendChild(element);
-    localStorage.setItem(id, inputValue);
+
+    const groceryObject = {
+      id: id,
+      value: inputValue,
+    };
+    console.log(groceryObject);
+    let itemsFromLocalStorage = JSON.parse(localStorage.getItem("list"));
+
+    console.log(itemsFromLocalStorage);
+
+    if (!itemsFromLocalStorage) {
+      itemsFromLocalStorage = [];
+    }
+
+    itemsFromLocalStorage.push(groceryObject);
+    localStorage.setItem("list", JSON.stringify(itemsFromLocalStorage));
+
     groceryInput.value = "";
 
     alert.textContent = "item added to the list";
@@ -132,19 +148,30 @@ function clearItems() {
   }, 3000);
 }
 
-const storageBtn = document.querySelector(".set-storage");
+function setupItems() {
+  let itemsFromLocalStorage = JSON.parse(localStorage.getItem("list"));
 
-storageBtn.addEventListener("click", setItemToLocalStorage);
+  itemsFromLocalStorage.forEach(function (item) {
+    console.log("item:", item);
+    const element = document.createElement("article");
+    let attribute = document.createAttribute("data-id");
+    attribute.value = item.id;
+    element.setAttributeNode(attribute);
+    element.classList.add("grocery-item");
+    element.innerHTML = `
+    <p class="title">${item.value}</p>
+    <div class="btn-container">
+      <button type="button" class="edit-btn">
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+      <button type="button" class="delete-btn">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+  `;
 
-function setItemToLocalStorage() {
-  localStorage.setItem("car", "Nissan");
+    list.appendChild(element);
+  });
 }
 
-const getStorageBtn = document.querySelector(".get-storage");
-
-getStorageBtn.addEventListener("click", getItemStorage);
-
-function getItemStorage() {
-  const item = localStorage.getItem("car");
-  console.log(item);
-}
+window.addEventListener("DOMContentLoaded", setupItems);
