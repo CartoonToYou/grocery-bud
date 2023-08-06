@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap');
+
+body {
+  font-family: 'Kanit', sans-serif;
+}
+
 .edit-btn, .delete-btn {
   background-color: transparent;
   border-color: transparent;
@@ -124,6 +130,11 @@
 
 .grocery-container {
   margin-top: 2rem;
+  /* visibility: hidden; */
+}
+
+.show-container {
+  visibility: visible;
 }
 
 .alert {
